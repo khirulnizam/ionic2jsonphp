@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component ,OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ToastController } from '@ionic/angular';
 import { Router } from "@angular/router";
+
+//network chceker
+import { NetworkCheckerService } from '../services/network-checker.service';
 
 //for onlineDB
 import { HttpClient, HttpHeaders} from '@angular/common/http';
@@ -11,31 +14,38 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit{
 
   constructor(
+    private network: NetworkCheckerService,//for network chcker
     public formBuilder: FormBuilder,
     private toast: ToastController,
     private router: Router,
     private http:HttpClient
-	) {
-    
-  }//end constructor
-
-  mainForm: FormGroup;//hold data from formgroup
-  Data:any[] = []//hold resultsets of records
-
-  ngOnInit(){//on screen init
+	) 
+  {
     this.mainForm = this.formBuilder.group({
       nokp: [''],//reset data form
       nama: [''],
       pendapatan: [''],
     })
+  }//end constructor
+
+  mainForm: FormGroup;//hold data from formgroup
+  Data:any[] = []//hold resultsets of records
+
+  async ngOnInit(){//on screen init
+
+    await this.network.openCheckNetwork();
+    await this.network.logNetworkState();
+
+    
   }//end ngOnInit
 
-  //urlinsertbanyak:any="http://khirulnizam.com/training/1nsertbanyakorang.php";
-  //urlinsert1orang:any="http://khirulnizam.com/training/1nsert1orang.php";//server
-  urlinsert1orang:any="http://192.168.1.104/training/1nsert1orang.php";//local
+  //urlinsertbanyak:any="https://khirulnizam.com/training/1nsertbanyakorang.php";
+  urlinsert1orang:any="https://khirulnizam.com/training/1nsert1orang.php";//server
+  //urlinsert1orang:any="https://192.168.1.103/training/1nsert1orang.php";//local
+  //!!!!!!! must HTTPS
   
   headers:HttpHeaders;
   success:any;
@@ -43,7 +53,8 @@ export class HomePage {
   orangdata:any;
 
   simpanOnline(){
-    if(this.mainForm.value.nokp!=null || this.mainForm.value.nokp!=""){
+    if(this.network.onlineIndicator){
+      alert("YES Network available");
       this.orangdata={
         'nokp':this.mainForm.value.nokp,
         'nama':this.mainForm.value.nama,
@@ -69,7 +80,7 @@ export class HomePage {
           alert("Maaf simpanan rekod ada masalah");
       });
     }else{
-      alert ("Pastikan NOKP diisi");
+      alert("NO-network available");
     }
   }//simpanOnline
 }
