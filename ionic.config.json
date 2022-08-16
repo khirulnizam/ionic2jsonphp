@@ -1,0 +1,7 @@
+{
+  "name": "ionic2jsonphp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Profile Orang Asal
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+      <form [formGroup]="mainForm" (ngSubmit)="tambahOrang()">
+      <h1>Profile Ketua Keluarga</h1>
+      <ion-item>
+        <ion-label position="floating">
+          <ion-icon item-left name="person-circle"></ion-icon>
+          Nama
+        </ion-label>
+        <ion-input formControlName="nama" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          <ion-icon item-left name="card"></ion-icon>
+          No KP/IC (010101-01-0101)
+        </ion-label>
+        <ion-input formControlName="nokp" required></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">
+          <ion-icon item-left name="cash"></ion-icon>
+          Gaji/Pendapatan
+        </ion-label>
+        <ion-input formControlName="pendapatan" required></ion-input>
+      </ion-item>
+      <ion-item>
+
+        <ion-button color="secondary" (click)="simpanOnline()">Simpan Online &nbsp;
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          
+        
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button color="success" [routerLink]="['/janajson']">Jana json &nbsp; 
+        </ion-button>
+        
+      </ion-item>
+    </form>
+
+</ion-content>
